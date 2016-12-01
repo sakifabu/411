@@ -14,8 +14,11 @@ payload = response.read()
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 ssl_sock = ssl.wrap_socket(s,
-				ca_certs="server.crt",
-				cert_reqs=ssl.CERT_REQUIRED)
+                           ca_certs="server.crt",
+                           cert_reqs=ssl.CERT_REQUIRED)
+
+ssl_sock.connect(('localhost', 10023))
+
 ssl_sock.connect(('localhost', 10022))
 
 
