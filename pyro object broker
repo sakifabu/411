@@ -1,0 +1,21 @@
+import os, time, json, hashlib, Pyro4, os
+
+#Clear the terminal when the server goes up
+os.system('clear')
+
+#Locate the URI of the pyro server
+with Pyro4.locateNS() as ns:
+	for x,y in ns.list(prefix="*.diamond").items():
+		uri = y
+warehouse = Pyro4.Proxy(uri)
+payload= (open('payload.json').read()
+#create a message object to hold the Pyro Objects to send
+class Message(object):
+
+	def __init__(self, payload):
+		self.payload = payload
+
+	#Send the message over pyro
+	def send(self):
+		warehouse.store(self.payload)
+    print(payload)
