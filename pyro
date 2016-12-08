@@ -1,0 +1,36 @@
+import Pyro4,pika, os
+from Crypto.Cipher import AES
+
+
+#Clear the terminal when the server starts up
+os.system('clear')
+
+
+print('Pyro4 waiting for JSON Payload')
+#Class to hold the pyro object
+class Warehouse(object):
+	def __init__(self):
+		pass
+	#Method to recieve the message from pyro
+	@Pyro4.expose
+	def store(self, recieved):
+		payload = received
+    Obj  = AES.new('This is a key123', AES.MODE_CBC, 'This is an IV456')
+    length = 16 - (len(payload)%16)
+    payload +=bytes([length])*length
+    message = Obj.encrypt(payload)
+    #message =payload
+    connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+
+    channel = connection.channel()
+
+    channel.queue_declare(queue='rabbitmessage')
+
+    channel.basic_publish(exchange='',routing_key='rabbitmessage',body=message)
+    connection.close()
+#Establish the Pyro name server
+with Pyro4.Daemon() as daemon:
+  message_uri = daemon.register(Warehouse())
+	Pyro4.locateNS().register("ion.diamond.message", message_uri)
+
+	daemon.requestLoop()
